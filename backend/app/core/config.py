@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     debug: bool = True
 
-    database_url: str = "postgresql://postgres:9654@localhost:5432/muninn"
+    database_url: str = "postgresql://postgres:password@localhost:5432/muninn"
 
     gemini_api_key: str = ""
     gemini_model: str = "gemini-2.5-flash"

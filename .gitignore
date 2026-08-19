@@ -23,6 +23,16 @@ storage/
 backend/storage/
 *.pdf
 
+# Frontend
+node_modules/
+.next/
+out/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env*.local
+!frontend/.env.local.example
+
 # Logs
 *.log
 
