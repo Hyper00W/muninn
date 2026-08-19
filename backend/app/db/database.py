@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql://postgres:9654@localhost:5432/muninn"
+from app.core.config import settings
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(settings.database_url)
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -18,4 +18,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close()
+        db.close()

@@ -1,3 +1,33 @@
+# Virtual Environment
+.venv/
 backend/.venv/
+venv/
+env/
+
+# Byte-compiled / Cache files
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment / Secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Local Document Storage (PDFs kept locally)
+storage/
+backend/storage/
+*.pdf
+
+# Logs
+*.log
+
+# IDE & Editor Config
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
