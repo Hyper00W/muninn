@@ -1,4 +1,4 @@
-﻿# 🐦 MUNINN
+﻿#  🪽 MUNINN
 
 ### AI Due Diligence Copilot
 
