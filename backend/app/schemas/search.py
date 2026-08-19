@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class SearchRequest(BaseModel):
-    query: str
-    top_k: int | None = None
+    query: str = Field(..., min_length=1)
+    top_k: int | None = Field(None, ge=1, le=50)
     document_id: int | None = None
 
 

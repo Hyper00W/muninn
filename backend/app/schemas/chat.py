@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ChatRequest(BaseModel):
-    question: str
+    question: str = Field(..., min_length=1)
+    top_k: int | None = Field(None, ge=1, le=50)
     document_id: int | None = None
 
 
@@ -23,6 +24,7 @@ class EvidenceItem(BaseModel):
 
 
 class ChatResponse(BaseModel):
+    question: str
     answer: str
     sources: list[SourceCitation]
     retrieved_evidence: list[EvidenceItem]

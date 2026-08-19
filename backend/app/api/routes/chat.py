@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.api.deps import ensure_document_exists
 from app.db.database import get_db
 from app.schemas.chat import ChatRequest, ChatResponse, EvidenceItem, SourceCitation
 from app.services.llm import generate_answer
@@ -21,10 +22,14 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
     Citations are derived from the retrieved chunk metadata, NOT from the LLM output,
     so they are always accurate regardless of what the LLM generates.
     """
+    if request.document_id is not None:
+        ensure_document_exists(request.document_id, db)
+
     # --- Retrieve evidence ---
     evidence = search(
         query=request.question,
         db=db,
+        top_k=request.top_k,
         document_id=request.document_id,
     )
 
@@ -61,6 +66,7 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
     ]
 
     return ChatResponse(
+        question=request.question,
         answer=answer,
         sources=unique_sources,
         retrieved_evidence=evidence_items,
