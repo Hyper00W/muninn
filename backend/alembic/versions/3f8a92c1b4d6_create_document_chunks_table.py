@@ -1,4 +1,4 @@
-﻿"""create document chunks table
+"""create document chunks table
 
 Revision ID: 3f8a92c1b4d6
 Revises: 0bd3f967a037

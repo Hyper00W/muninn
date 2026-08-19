@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://postgres:9654@localhost:5432/muninn"
 
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-1.5-flash"
+    gemini_model: str = "gemini-2.5-flash"
 
     embedding_model: str = "all-MiniLM-L6-v2"
 

@@ -1,4 +1,4 @@
-﻿import numpy as np
+import numpy as np
 from sqlalchemy.orm import Session
 
 from app.core.config import settings

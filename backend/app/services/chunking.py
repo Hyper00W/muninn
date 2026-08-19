@@ -1,4 +1,4 @@
-﻿from app.core.config import settings
+from app.core.config import settings
 
 
 def _merge_into_chunks(

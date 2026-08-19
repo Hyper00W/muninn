@@ -1,4 +1,17 @@
-﻿import google.generativeai as genai
+import os
+import certifi
+
+os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
+os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+os.environ.setdefault("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH", certifi.where())
+
+try:
+    import truststore
+    truststore.inject_into_ssl()
+except Exception:
+    pass
+
+import google.generativeai as genai
 
 from app.core.config import settings
 
@@ -9,7 +22,7 @@ _model = None
 def _get_model():
     global _model
     if _model is None:
-        genai.configure(api_key=settings.gemini_api_key)
+        genai.configure(api_key=settings.gemini_api_key, transport="rest")
         _model = genai.GenerativeModel(settings.gemini_model)
     return _model
 
