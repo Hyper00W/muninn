@@ -3,6 +3,7 @@ import torch
 from rank_bm25 import BM25Okapi
 from sentence_transformers import util
 from sqlalchemy.orm import Session
+from app.services.reranker import rerank
 
 from app.core.config import settings
 from app.models.document import Document
@@ -28,6 +29,7 @@ def search(
     """
 
     top_k = top_k or settings.retrieval_top_k
+    candidate_k = max(top_k * 4, 20)
 
     # ---------------------------------------------------------
     # 1. Fetch candidate chunks
@@ -139,7 +141,7 @@ def search(
         reverse=True,
     )
 
-    ranked_indices = ranked_indices[:top_k]
+    ranked_indices = ranked_indices[:candidate_k]
 
     # ---------------------------------------------------------
     # 6. Build API response
@@ -148,7 +150,6 @@ def search(
     results = []
 
     for corpus_index in ranked_indices:
-
         chunk = chunks[corpus_index]
         filename = filenames[corpus_index]
 
@@ -159,14 +160,10 @@ def search(
                 "document_id": chunk.document_id,
                 "filename": filename,
                 "page_number": chunk.page_number,
-
-                # Dense similarity remains visible
                 "score": round(
                     dense_scores.get(corpus_index, 0.0),
                     4,
                 ),
-
-                # Useful for debugging/evaluation
                 "hybrid_score": round(
                     fused_scores[corpus_index],
                     6,
@@ -174,4 +171,11 @@ def search(
             }
         )
 
-    return results
+# Rerank    the hybrid candidate pool
+    reranked_results = rerank(
+        query=query,
+        documents=results,
+    )
+
+    # Return only the final requested number of chunks
+    return reranked_results[:top_k]
